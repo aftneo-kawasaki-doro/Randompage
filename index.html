@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<body>
+<script>
+async function jump() {
+    const res =
+      await fetch("./articles.json");
+
+    const articles =
+      await res.json();
+
+    const random =
+      Math.floor(
+        Math.random()*articles.length
+      );
+
+    location.replace(
+      "https://snabi.jp/facility/29695/blog_articles/" + articles[random].id
+    );
+}
+
+jump();
+</script>
+</body>
+</html>
