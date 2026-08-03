@@ -41,9 +41,9 @@ jobs:
 
       - name: Prepare Pages artifact
         run: |
-          # Copy repository files to artifact dir excluding git and workflow scripts
+          # Copy built site from docs/ to artifact dir
           mkdir -p artifact
-          rsync -a --exclude='.git' --exclude='.github' --exclude='scripts' --exclude='README.md' --exclude='.gitignore' ./ artifact/
+          rsync -a --delete ./docs/ artifact/
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v5

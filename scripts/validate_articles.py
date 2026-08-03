@@ -34,7 +34,7 @@ def get_project_root() -> Path:
 
 
 ROOT = get_project_root()
-ARTICLES_PATH = ROOT / "articles.json"
+ARTICLES_PATH = ROOT / "docs" / "articles.json"
 
 
 def fail(msg: str, code: int = 1) -> None:
