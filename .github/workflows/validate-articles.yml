@@ -1,0 +1,30 @@
+name: Validate articles.json
+
+on:
+  push:
+    paths:
+      - 'articles.json'
+      - '.github/workflows/validate-articles.yml'
+  pull_request:
+    paths:
+      - 'articles.json'
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+
+      - name: Validate articles.json
+        run: |
+          python scripts/validate_articles.py
