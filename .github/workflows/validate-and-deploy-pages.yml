@@ -42,7 +42,7 @@ jobs:
       - name: Prepare Pages artifact
         run: |
           # Copy built site from docs/ to artifact dir
-          mkdir -p artifact
+          mkdir artifact
           rsync -a --delete ./docs/ artifact/
 
       - name: Upload Pages artifact
