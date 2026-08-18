@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <ul>
+        </ul>
+        <script>
+            async function list() {
+                const res = await fetch("./articles.json");
+
+                const articles = await res.json();
+                let ul = document.querySelector("ul");
+                articles.forEach(
+                    (article) => {
+                        let li = document.createElement("li");
+                        let a = document.createElement("a");
+                        a.href = "https://snabi.jp/facility/29695/blog_articles/" + String(article["id"]);
+                        a.target = "_blank";
+                        a.innerText = article["title"];
+                        li.appendChild(a);
+                        ul.appendChild(li);
+                    }
+                );
+            }
+
+            list();
+        </script>
+    </body>
+</html>
