@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
     <body>
-        <ul>
+        <ul id="article-list">
         </ul>
         <script>
             async function list() {
                 const res = await fetch("./articles.json");
 
                 const articles = await res.json();
-                let ul = document.querySelector("ul");
+                let ul = document.querySelector("#article-list");
                 articles.forEach(
                     (article) => {
                         let li = document.createElement("li");
