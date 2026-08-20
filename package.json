@@ -1,6 +1,9 @@
 {
   "name": "randompage",
   "private": true,
+  "engines": {
+    "node": ">= 26.7.0"
+  },
   "scripts": {
     "build": "tsc",
     "typecheck": "tsc --noEmit && tsc -p scripts/tsconfig.json --noEmit",
