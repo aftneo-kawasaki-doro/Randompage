@@ -3,26 +3,6 @@
     <body>
         <ul id="article-list">
         </ul>
-        <script>
-            async function list() {
-                const res = await fetch("./articles.json");
-
-                const articles = await res.json();
-                let ul = document.querySelector("#article-list");
-                articles.forEach(
-                    (article) => {
-                        let li = document.createElement("li");
-                        let a = document.createElement("a");
-                        a.href = "https://snabi.jp/facility/29695/blog_articles/" + String(article["id"]);
-                        a.target = "_blank";
-                        a.innerText = article["title"];
-                        li.appendChild(a);
-                        ul.appendChild(li);
-                    }
-                );
-            }
-
-            list();
-        </script>
+        <script type="module" src="./list.js"></script>
     </body>
 </html>
