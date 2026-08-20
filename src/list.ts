@@ -14,7 +14,7 @@ async function list(doc: Document): Promise<void> {
     link.href = articleUrl(article);
     link.target = "_blank";
     link.rel = "noreferrer";
-    link.textContent = article.title;
+    link.textContent = article.title; // Display the title as plain text to avoid HTML injection
     listItem.appendChild(link);
     articleList.appendChild(listItem);
   }

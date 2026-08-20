@@ -8,5 +8,5 @@
     "noEmit": false,
     "types": ["node"]
   },
-  "include": ["validate_articles.ts"]
+  "include": ["*.ts"]
 }

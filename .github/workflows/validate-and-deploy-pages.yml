@@ -27,6 +27,9 @@ jobs:
       - name: Install Node.js dependencies
         run: npm ci
 
+      - name: Test article validation
+        run: npm run test:articles
+
       - name: Validate articles.json
         run: npm run validate:articles
 
