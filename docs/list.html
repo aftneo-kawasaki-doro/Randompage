@@ -1,8 +1,14 @@
 <!DOCTYPE html>
 <html>
-    <body>
+  <head>
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self'; base-uri 'self'; form-action 'self'"
+    />
+  </head>
+  <body>
         <ul id="article-list">
         </ul>
-        <script type="module" src="./list.js"></script>
-    </body>
+    <script type="module" src="./list.js"></script>
+  </body>
 </html>
