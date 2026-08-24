@@ -4,8 +4,32 @@ export interface Article {
 }
 
 export async function loadArticles(): Promise<Article[]> {
-  const response = await fetch("./articles.json");
-  return (await response.json()) as Article[];
+  try {
+    const response = await fetch("./articles.json");
+
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    const data: unknown = await response.json();
+    if (
+      !Array.isArray(data) ||
+      !data.every(
+        (item) =>
+          typeof item === "object" &&
+          item !== null &&
+          typeof item.id === "number" &&
+          typeof item.title === "string",
+      )
+    ) {
+      throw new Error("Invalid article format");
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Failed to load articles:", error);
+    throw error;
+  }
 }
 
 export function articleUrl(article: Article): string {
