@@ -1,10 +1,5 @@
 name: Validate and deploy Pages
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 on:
   push:
     branches: ["main"]
@@ -13,6 +8,8 @@ on:
 
 jobs:
   validate:
+    permissions:
+      contents: read
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -38,6 +35,10 @@ jobs:
 
   deploy:
     needs: validate
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     runs-on: ubuntu-latest
     if: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
     steps:
