@@ -3,9 +3,11 @@ export interface Article {
   title: string;
 }
 
-export async function loadArticles(): Promise<Article[]> {
+export async function loadArticles(
+  path = "./articles.json",
+): Promise<Article[]> {
   try {
-    const response = await fetch("./articles.json");
+    const response = await fetch(path);
 
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ブログの過去記事ガチャ | Randompage</title>
+    <meta
+      name="description"
+      content="過去の記事から、次のブログのネタを見つけるためのガチャです。"
+    />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'"
+    />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="site-header">
+        <a
+          class="brand"
+          href="./index.html"
+          aria-label="Randompage アイデアガチャ"
+          ><span class="brand-mark" aria-hidden="true">R</span
+          ><span>Randompage</span></a
+        >
+        <a class="header-link" href="../list.html"
+          >記事一覧 <span aria-hidden="true">↗</span></a
+        >
+      </header>
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">AFTER NEO KAWASAKI / IDEA MACHINE</p>
+        <h1 id="page-title">過去記事から、<br /><em>次のネタ</em>を引く。</h1>
+        <p class="lead">
+          思いがけない記事をひとつ。そこから連想を広げて、まだ書いていないテーマを見つけよう。
+        </p>
+      </section>
+      <section class="idea-layout" aria-label="記事ガチャと発想メモ">
+        <article class="draw-panel" id="draw-panel" aria-live="polite">
+          <div class="panel-label">
+            <span class="spark" aria-hidden="true">✦</span> DRAW A STORY
+          </div>
+          <p class="card-caption" id="card-caption">今回の発想材料</p>
+          <h2 id="article-title">記事を探しています…</h2>
+          <a
+            id="article-link"
+            class="read-link"
+            target="_blank"
+            rel="noreferrer"
+            hidden
+            >この記事を読む <span aria-hidden="true">↗</span></a
+          >
+          <button
+            id="shuffle-button"
+            class="primary-button"
+            type="button"
+            disabled
+          >
+            <span aria-hidden="true">⟳</span> もう一回引く
+          </button>
+          <button id="skip-button" class="skip-button" type="button" hidden>
+            演出をスキップ
+          </button>
+        </article>
+        <article class="note-panel">
+          <div class="panel-label">WRITE IT DOWN</div>
+          <h2>思いついたこと</h2>
+          <p class="note-hint">
+            タイトルから連想したテーマや、書いてみたいことを残しておけます。
+          </p>
+          <form id="note-form">
+            <label class="sr-only" for="note-input">発想メモ</label>
+            <textarea
+              id="note-input"
+              rows="5"
+              maxlength="500"
+              placeholder="たとえば、この話題を自分の仕事に置き換えると…"
+              required
+            ></textarea>
+            <button class="secondary-button" type="submit">
+              <span aria-hidden="true">＋</span> メモを保存
+            </button>
+          </form>
+        </article>
+      </section>
+      <section class="notes-section" aria-labelledby="notes-heading">
+        <div class="section-heading">
+          <div>
+            <p class="panel-label">YOUR NOTEBOOK</p>
+            <h2 id="notes-heading">保存した発想</h2>
+          </div>
+          <span class="note-limit">最大20件</span>
+        </div>
+        <p id="notes-empty" class="empty-state">
+          ここに、あなたの次の記事の種が並びます。
+        </p>
+        <ol id="notes-list" class="notes-list"></ol>
+      </section>
+      <p id="error-message" class="error-message" role="alert" hidden>
+        記事を読み込めませんでした。通信を確認して、もう一度お試しください。
+        <button id="retry-button" class="text-button" type="button">
+          再試行
+        </button>
+      </p>
+      <footer class="site-footer">
+        過去の記事は、未来の記事の材料になる。
+      </footer>
+    </main>
+    <script type="module" src="./ideas.js"></script>
+  </body>
+</html>
