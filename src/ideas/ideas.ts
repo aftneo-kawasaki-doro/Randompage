@@ -40,13 +40,40 @@ function readNotes(storage: Storage | undefined): IdeaNote[] {
   }
 }
 
-function writeNotes(storage: Storage | undefined, notes: IdeaNote[]): void {
-  if (!storage) return;
+function writeNotes(storage: Storage, notes: IdeaNote[]): boolean {
   try {
     storage.setItem(NOTES_KEY, JSON.stringify(notes.slice(0, 20)));
+    return true;
   } catch {
-    // Storage may be disabled or full. The card remains usable without notes.
+    return false;
   }
+}
+
+async function updateNotes(
+  win: Window,
+  storage: Storage | undefined,
+  update: (notes: IdeaNote[]) => IdeaNote[],
+): Promise<IdeaNote[] | undefined> {
+  if (!storage) return undefined;
+
+  const save = (): IdeaNote[] | undefined => {
+    const nextNotes = update(readNotes(storage));
+    return writeNotes(storage, nextNotes) ? nextNotes : undefined;
+  };
+
+  try {
+    if (win.navigator.locks) {
+      return await win.navigator.locks.request(
+        "randompage:idea-notes",
+        { mode: "exclusive" },
+        save,
+      );
+    }
+  } catch {
+    return undefined;
+  }
+
+  return save();
 }
 
 function chooseArticle(
@@ -107,7 +134,7 @@ function start(doc: Document, win: Window): void {
   function renderNotes(): void {
     notesList.replaceChildren();
     notesEmpty.hidden = notes.length > 0;
-    for (const [index, note] of notes.entries()) {
+    for (const note of notes) {
       const item = doc.createElement("li");
       item.className = "note-item";
       const heading = doc.createElement("strong");
@@ -132,9 +159,19 @@ function start(doc: Document, win: Window): void {
       removeButton.className = "text-button";
       removeButton.textContent = "削除";
       removeButton.addEventListener("click", () => {
-        notes = notes.filter((_, noteIndex) => noteIndex !== index);
-        writeNotes(storage, notes);
-        renderNotes();
+        void updateNotes(win, storage, (currentNotes) =>
+          currentNotes.filter(
+            (currentNote) =>
+              currentNote.articleId !== note.articleId ||
+              currentNote.createdAt !== note.createdAt ||
+              currentNote.text !== note.text,
+          ),
+        ).then((updatedNotes) => {
+          if (updatedNotes) {
+            notes = updatedNotes;
+            renderNotes();
+          }
+        });
       });
       footer.append(date, removeButton);
       item.append(heading, text, footer);
@@ -209,16 +246,22 @@ function start(doc: Document, win: Window): void {
     event.preventDefault();
     const text = noteInput.value.trim();
     if (!currentArticle || text.length === 0) return;
-    notes.unshift({
-      articleId: currentArticle.id,
-      articleTitle: currentArticle.title,
-      text,
-      createdAt: new Date().toISOString(),
+    const article = currentArticle;
+    void updateNotes(win, storage, (currentNotes) => [
+      {
+        articleId: article.id,
+        articleTitle: article.title,
+        text,
+        createdAt: new Date().toISOString(),
+      },
+      ...currentNotes,
+    ]).then((updatedNotes) => {
+      if (updatedNotes) {
+        notes = updatedNotes;
+        noteInput.value = "";
+        renderNotes();
+      }
     });
-    notes = notes.slice(0, 20);
-    writeNotes(storage, notes);
-    noteInput.value = "";
-    renderNotes();
   });
 
   renderNotes();
