@@ -1,6 +1,9 @@
 import { articleUrl, loadArticles, type Article } from "../articles.js";
 
+type UUID = string & { readonly __brand: "UUID" };
+
 interface IdeaNote {
+  id: UUID;
   articleId: number;
   articleTitle: string;
   text: string;
@@ -8,6 +11,8 @@ interface IdeaNote {
 }
 
 const NOTES_KEY = "randompage:idea-notes";
+const UUID_PATTERN =
+  /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 function getStorage(win: Window): Storage | undefined {
   try {
@@ -17,10 +22,15 @@ function getStorage(win: Window): Storage | undefined {
   }
 }
 
+function isUUID(value: unknown): value is UUID {
+  return typeof value === "string" && UUID_PATTERN.test(value);
+}
+
 function isIdeaNote(value: unknown): value is IdeaNote {
   if (typeof value !== "object" || value === null) return false;
   const note = value as Record<string, unknown>;
   return (
+    isUUID(note.id) &&
     Number.isSafeInteger(note.articleId) &&
     typeof note.articleTitle === "string" &&
     typeof note.text === "string" &&
@@ -160,12 +170,7 @@ function start(doc: Document, win: Window): void {
       removeButton.textContent = "削除";
       removeButton.addEventListener("click", () => {
         void updateNotes(win, storage, (currentNotes) =>
-          currentNotes.filter(
-            (currentNote) =>
-              currentNote.articleId !== note.articleId ||
-              currentNote.createdAt !== note.createdAt ||
-              currentNote.text !== note.text,
-          ),
+          currentNotes.filter((currentNote) => currentNote.id !== note.id),
         ).then((updatedNotes) => {
           if (updatedNotes) {
             notes = updatedNotes;
@@ -249,6 +254,7 @@ function start(doc: Document, win: Window): void {
     const article = currentArticle;
     void updateNotes(win, storage, (currentNotes) => [
       {
+        id: win.crypto.randomUUID() as UUID,
         articleId: article.id,
         articleTitle: article.title,
         text,
