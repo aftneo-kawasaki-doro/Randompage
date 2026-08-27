@@ -1,17 +1,18 @@
 {
-  "name": "randompage",
-  "private": true,
-  "engines": {
-    "node": ">= 26.7.0"
-  },
-  "scripts": {
-    "build": "tsc",
-    "typecheck": "tsc --noEmit && tsc -p scripts/tsconfig.json --noEmit",
-    "validate:articles": "tsc -p scripts/tsconfig.json && node scripts/dist/validate_articles.js",
-    "test:articles": "tsc -p scripts/tsconfig.json && node --test scripts/dist/validate_articles.test.js"
-  },
-  "devDependencies": {
-    "@types/node": "^26.2.0",
-    "typescript": "^7.0.2"
-  }
+	"name": "randompage",
+	"private": true,
+	"engines": {
+		"node": ">= 26.7.0"
+	},
+	"scripts": {
+		"build": "tsc",
+		"typecheck": "tsc --noEmit && tsc -p scripts/tsconfig.json --noEmit",
+		"validate:articles": "tsc -p scripts/tsconfig.json && node scripts/dist/validate_articles.js",
+		"test:articles": "tsc -p scripts/tsconfig.json && node --test scripts/dist/validate_articles.test.js"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^2.5.10",
+		"@types/node": "^26.2.0",
+		"typescript": "^7.0.2"
+	}
 }

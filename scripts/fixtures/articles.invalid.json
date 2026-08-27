@@ -1,5 +1,5 @@
 [
-  { "id": 0, "title": "invalid id" },
-  { "id": 1, "title": 123 },
-  { "id": 1, "title": "   " }
+	{ "id": 0, "title": "invalid id" },
+	{ "id": 1, "title": 123 },
+	{ "id": 1, "title": "   " }
 ]
