@@ -9,10 +9,17 @@ export interface Article {
 	title: string;
 }
 
+const MAX_TITLE_LENGTH = 200;
+
 function isArticle(value: unknown): value is Article {
 	if (typeof value !== "object" || value === null) return false;
 	const article = value as Record<string, unknown>;
-	return isArticleId(article.id) && typeof article.title === "string";
+	return (
+		isArticleId(article.id) &&
+		typeof article.title === "string" &&
+		article.title.trim().length > 0 &&
+		article.title.length <= MAX_TITLE_LENGTH
+	);
 }
 
 export async function loadArticles(
@@ -29,10 +36,18 @@ export async function loadArticles(
 		if (!Array.isArray(data)) {
 			throw new Error("Invalid article format");
 		}
+		if (data.length === 0) {
+			throw new Error("Invalid article format");
+		}
 
 		const items: unknown[] = data;
 		const articles = items.filter(isArticle);
 		if (articles.length !== items.length) {
+			throw new Error("Invalid article format");
+		}
+		if (
+			new Set(articles.map((article) => article.id)).size !== articles.length
+		) {
 			throw new Error("Invalid article format");
 		}
 
