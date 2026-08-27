@@ -228,7 +228,8 @@ function start(doc: Document, win: Window): void {
 		articleTitle.textContent = article.title;
 		articleLink.href = articleUrl(article);
 		articleLink.hidden = false;
-		noteInput.focus();
+		// NOTE: Focus on the input field to allow users to start typing immediately. However, this can cause unwanted scrolling and bring up the software keyboard, especially on mobile devices.
+		// noteInput.focus();
 	}
 
 	function drawArticle(article: Article | undefined, animate: boolean): void {
