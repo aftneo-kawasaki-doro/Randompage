@@ -9,6 +9,12 @@ export interface Article {
 	title: string;
 }
 
+function isArticle(value: unknown): value is Article {
+	if (typeof value !== "object" || value === null) return false;
+	const article = value as Record<string, unknown>;
+	return isArticleId(article.id) && typeof article.title === "string";
+}
+
 export async function loadArticles(
 	path = "./articles.json",
 ): Promise<Article[]> {
@@ -25,13 +31,7 @@ export async function loadArticles(
 		}
 
 		const items: unknown[] = data;
-		const articles = items.filter(
-			(item): item is Article =>
-				typeof item === "object" &&
-				item !== null &&
-				isArticleId((item as Record<string, unknown>).id) &&
-				typeof (item as Record<string, unknown>).title === "string",
-		);
+		const articles = items.filter(isArticle);
 		if (articles.length !== items.length) {
 			throw new Error("Invalid article format");
 		}
