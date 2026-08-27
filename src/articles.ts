@@ -1,5 +1,11 @@
+export type ArticleId = number & { readonly __brand: unique symbol };
+
+export function isArticleId(value: unknown): value is ArticleId {
+	return typeof value === "number" && Number.isSafeInteger(value) && value > 0;
+}
+
 export interface Article {
-	id: number;
+	id: ArticleId;
 	title: string;
 }
 
@@ -14,20 +20,23 @@ export async function loadArticles(
 		}
 
 		const data: unknown = await response.json();
-		if (
-			!Array.isArray(data) ||
-			!data.every(
-				(item) =>
-					typeof item === "object" &&
-					item !== null &&
-					typeof item.id === "number" &&
-					typeof item.title === "string",
-			)
-		) {
+		if (!Array.isArray(data)) {
 			throw new Error("Invalid article format");
 		}
 
-		return data;
+		const items: unknown[] = data;
+		const articles = items.filter(
+			(item): item is Article =>
+				typeof item === "object" &&
+				item !== null &&
+				isArticleId((item as Record<string, unknown>).id) &&
+				typeof (item as Record<string, unknown>).title === "string",
+		);
+		if (articles.length !== items.length) {
+			throw new Error("Invalid article format");
+		}
+
+		return articles;
 	} catch (error) {
 		console.error("Failed to load articles:", error);
 		throw error;

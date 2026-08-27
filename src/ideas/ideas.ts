@@ -1,13 +1,20 @@
-import { type Article, articleUrl, loadArticles } from "../articles.js";
+import {
+	type Article,
+	type ArticleId,
+	articleUrl,
+	isArticleId,
+	loadArticles,
+} from "../articles.js";
 
-type UUID = string & { readonly __brand: "UUID" };
+type UUID = string & { readonly __brand: unique symbol };
+type UTCISOString = string & { readonly __brand: unique symbol };
 
 interface IdeaNote {
 	id: UUID;
-	articleId: number;
+	articleId: ArticleId;
 	articleTitle: string;
 	text: string;
-	createdAt: string;
+	createdAt: UTCISOString;
 }
 
 const NOTES_KEY = "randompage:idea-notes";
@@ -26,15 +33,25 @@ function isUUID(value: unknown): value is UUID {
 	return typeof value === "string" && UUID_PATTERN.test(value);
 }
 
+function isUTCISOString(value: unknown): value is UTCISOString {
+	if (typeof value !== "string") return false;
+	try {
+		const date = new Date(value);
+		return !Number.isNaN(date.getTime()) && date.toISOString() === value;
+	} catch {
+		return false;
+	}
+}
+
 function isIdeaNote(value: unknown): value is IdeaNote {
 	if (typeof value !== "object" || value === null) return false;
 	const note = value as Record<string, unknown>;
 	return (
 		isUUID(note.id) &&
-		Number.isSafeInteger(note.articleId) &&
+		isArticleId(note.articleId) &&
 		typeof note.articleTitle === "string" &&
 		typeof note.text === "string" &&
-		typeof note.createdAt === "string"
+		isUTCISOString(note.createdAt)
 	);
 }
 
@@ -88,7 +105,7 @@ async function updateNotes(
 
 function chooseArticle(
 	articles: Article[],
-	currentId?: number,
+	currentId?: ArticleId,
 ): Article | undefined {
 	const candidates = articles.filter((article) => article.id !== currentId);
 	const pool = candidates.length > 0 ? candidates : articles;
@@ -266,7 +283,7 @@ function start(doc: Document, win: Window): void {
 				articleId: article.id,
 				articleTitle: article.title,
 				text,
-				createdAt: new Date().toISOString(),
+				createdAt: new Date().toISOString() as UTCISOString,
 			},
 			...currentNotes,
 		]).then((updatedNotes) => {
