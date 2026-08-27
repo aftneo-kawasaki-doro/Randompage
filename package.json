@@ -8,7 +8,8 @@
 		"build": "tsc",
 		"typecheck": "tsc --noEmit && tsc -p scripts/tsconfig.json --noEmit",
 		"validate:articles": "tsc -p scripts/tsconfig.json && node scripts/dist/validate_articles.js",
-		"test:articles": "tsc -p scripts/tsconfig.json && node --test scripts/dist/validate_articles.test.js"
+		"test:articles": "tsc -p scripts/tsconfig.json && node --test scripts/dist/validate_articles.test.js",
+		"validate": "npx biome ci && npm audit --audit-level=moderate && npm run test:articles && npm run validate:articles"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^2.5.10",
