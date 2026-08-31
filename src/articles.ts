@@ -1,3 +1,5 @@
+import { articles as articlesJson } from "./articles.gen.js";
+
 export type ArticleId = number & { readonly __brand: unique symbol };
 
 export function isArticleId(value: unknown): value is ArticleId {
@@ -23,16 +25,10 @@ function isArticle(value: unknown): value is Article {
 }
 
 export async function loadArticles(
-	path = "./articles.json",
+	_path = "./articles.json",
 ): Promise<Article[]> {
 	try {
-		const response = await fetch(path);
-
-		if (!response.ok) {
-			throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-		}
-
-		const data: unknown = await response.json();
+		const data: unknown = articlesJson;
 		if (!Array.isArray(data)) {
 			throw new Error("Invalid article format");
 		}

@@ -9,6 +9,13 @@ function loadFixture(name: string): unknown {
 	return JSON.parse(fs.readFileSync(fixturePath, "utf8"));
 }
 
+test("expects the current article source file to exist", () => {
+	assert.equal(
+		fs.existsSync(path.join(process.cwd(), "src", "articles.json")),
+		true,
+	);
+});
+
 test("accepts valid article fixture", () => {
 	assert.deepEqual(validateArticles(loadFixture("articles.valid.json")), []);
 });

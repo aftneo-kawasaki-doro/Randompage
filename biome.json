@@ -7,7 +7,7 @@
 	},
 	"files": {
 		"ignoreUnknown": false,
-		"includes": ["**", "!src/public/articles.json"]
+		"includes": ["**", "!src/articles.json"]
 	},
 	"formatter": {
 		"enabled": true,

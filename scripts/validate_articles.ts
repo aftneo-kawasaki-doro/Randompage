@@ -17,12 +17,7 @@ function fail(message: string, code = 1): never {
 }
 
 function main(): void {
-	const articlesPath = path.join(
-		getProjectRoot(),
-		"src",
-		"public",
-		"articles.json",
-	);
+	const articlesPath = path.join(getProjectRoot(), "src", "articles.json");
 
 	if (!fs.existsSync(articlesPath)) {
 		fail(`${articlesPath} not found`);
