@@ -12,6 +12,7 @@
       http-equiv="Content-Security-Policy"
       content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'"
     />
+    <link rel="preload" href="../articles.json" as="fetch" crossorigin />
     <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
@@ -107,6 +108,6 @@
         過去の記事は、未来の記事の材料になる。
       </footer>
     </main>
-    <script type="module" src="./ideas.js"></script>
+    <script type="module" src="./ideas.ts"></script>
   </body>
 </html>

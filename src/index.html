@@ -10,11 +10,12 @@
       http-equiv="Content-Security-Policy"
       content="script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self'; base-uri 'self'; form-action 'self'"
     />
+    <link rel="preload" href="./articles.json" as="fetch" crossorigin />
   </head>
   <body>
     <p id="error-message" role="alert" hidden>
       Failed to load articles. Please try again later.
     </p>
-    <script type="module" src="./index.js"></script>
+    <script type="module" src="./index.ts"></script>
   </body>
 </html>

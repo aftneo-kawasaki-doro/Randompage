@@ -6,9 +6,9 @@
 		"node": ">= 26.7.0"
 	},
 	"scripts": {
-		"build": "tsc",
+		"build": "npx vite build",
 		"typecheck": "tsc --noEmit && tsc -p scripts/tsconfig.json --noEmit",
-		"test:browser-data": "node --test --experimental-strip-types src",
+		"test:browser-data": "node --test --experimental-strip-types 'src/**/*.test.ts'",
 		"validate:articles": "tsc -p scripts/tsconfig.json && node scripts/dist/validate_articles.js",
 		"test:articles": "tsc -p scripts/tsconfig.json && node --test scripts/dist/validate_articles.test.js",
 		"validate": "npx biome ci && npm audit --audit-level=moderate && npm run test:articles && npm run test:browser-data && npm run validate:articles"
@@ -16,6 +16,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "^2.5.10",
 		"@types/node": "^26.2.0",
-		"typescript": "^7.0.2"
+		"typescript": "^7.0.2",
+		"vite": "^8.2.2"
 	}
 }
